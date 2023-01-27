@@ -11,7 +11,7 @@ export function createGetter(path) {
 
     let stepValue = field;
 
-    for (let step of pathSteps ) {
+    for (const step of pathSteps ) {
       if (stepValue[step]) {
         stepValue = stepValue[step]
       } else {
