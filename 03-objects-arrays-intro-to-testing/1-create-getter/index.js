@@ -15,7 +15,7 @@ export function createGetter(path) {
       if (stepValue[step]) {
         stepValue = stepValue[step]
       } else {
-        return undefined;
+        return;
       }
     }
 
