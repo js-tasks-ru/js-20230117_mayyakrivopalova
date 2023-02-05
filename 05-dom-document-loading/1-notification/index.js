@@ -8,11 +8,21 @@ export default class NotificationMessage {
     this.contentText = contentText;
     this.duration = duration;
     this.type = type;
-    this.element = {};
+    this.element = this.getElement();
   }
-  show() {
+
+  getElement() {
+    const element = document.createElement('div');
+    element.innerHTML = this.getTemplate();
+
+    return element.firstElementChild;
+  }
+
+  show(target = document.body) {
+    this.target = target;
+
     if (Object.keys(NotificationMessage.lastElement).length) {
-      NotificationMessage.lastElement.remove();
+      NotificationMessage.lastElement.destroy();
     }
 
     this.render()
@@ -20,18 +30,16 @@ export default class NotificationMessage {
     NotificationMessage.lastElement = this;
   }
   render() {
-    const element = document.createElement('div');
-    element.innerHTML = this.getTemplate();
-    this.element = element.firstElementChild;
-    document.body.append(this.element)
-    setTimeout(() => {
-      this.remove();
+    this.target.append(this.element)
+
+    this.timeoutID = setTimeout(() => {
+      this.destroy();
     }, this.duration)
   }
 
   getTemplate() {
     return `
-      <div class="notification success" style="--value:${this.getFormattedDuration()}">
+      <div class="notification ${this.type}" style="--value:${this.getFormattedDuration()}">
         <div class="timer"></div>
         <div class="inner-wrapper">
           <div class="notification-header">${this.type}</div>
@@ -49,14 +57,16 @@ export default class NotificationMessage {
   }
 
   remove() {
+    clearTimeout(this.timeoutID);
+
     if (this.element) {
       this.element.remove();
+      this.element = {};
     }
   }
 
   destroy() {
     this.remove();
-    this.element = {};
     NotificationMessage.lastElement = {};
   }
 }
