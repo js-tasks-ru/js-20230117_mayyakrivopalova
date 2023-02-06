@@ -1,8 +1,8 @@
 export default class NotificationMessage {
-  static lastElement = {};
+  static existElement = null;
 
   constructor(contentText = '', {
-    duration = 0,
+    duration = 1000,
     type = 'success'
   } = {}) {
     this.contentText = contentText;
@@ -21,14 +21,15 @@ export default class NotificationMessage {
   show(target = document.body) {
     this.target = target;
 
-    if (Object.keys(NotificationMessage.lastElement).length) {
-      NotificationMessage.lastElement.destroy();
+    if (NotificationMessage.existElement) {
+      NotificationMessage.existElement.destroy();
     }
 
     this.render()
       
-    NotificationMessage.lastElement = this;
+    NotificationMessage.existElement = this;
   }
+  
   render() {
     this.target.append(this.element)
 
@@ -57,16 +58,18 @@ export default class NotificationMessage {
   }
 
   remove() {
-    clearTimeout(this.timeoutID);
+    if (this.timeoutID) {
+      clearTimeout(this.timeoutID);
+    }
 
     if (this.element) {
       this.element.remove();
-      this.element = {};
+      this.element = null;
     }
   }
 
   destroy() {
     this.remove();
-    NotificationMessage.lastElement = {};
+    NotificationMessage.existElement = null;
   }
 }
