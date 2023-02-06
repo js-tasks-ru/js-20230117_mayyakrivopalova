@@ -56,12 +56,10 @@ export default class SortableTable {
       ${
         headerConfig
         .map((cell) => (
-          `
-            <div class="sortable-table__cell" data-id="${cell.id}" data-sortable="${cell.sortable}">
-              <span>${cell.title}</span>
-              ${this.setHeaderArrow(cell.sortable)}
-            </div>
-          `
+          `<div class="sortable-table__cell" data-id="${cell.id}" data-sortable="${cell.sortable}">
+            <span>${cell.title}</span>
+            ${this.setHeaderArrow(cell.sortable)}
+          </div>`
         ))
         .join('')
       }
@@ -73,7 +71,7 @@ export default class SortableTable {
       (sortable) 
       ? `<span data-element="arrow" class="sortable-table__sort-arrow">
             <span class="sort-arrow"></span>
-          </span>` 
+        </span>` 
       : `` 
     )
   }
@@ -83,11 +81,9 @@ export default class SortableTable {
         ${    
           data
           .map((item) => (
-            `
-              <a href="/products/${item.id}" class="sortable-table__row">
-                ${this.getBodyCell(item, headerConfig)}
-              </a>
-            `
+            `<a href="/products/${item.id}" class="sortable-table__row">
+              ${this.getBodyCell(item, headerConfig)}
+            </a>`
           ))
           .join('')
         }
