@@ -95,7 +95,7 @@ export default class SortableTable {
       .map((cell) => (
         (cell.id === 'images')
         ?`<div class="sortable-table__cell">
-            <img class="sortable-table-image" alt="Image" src="">
+            <img class="sortable-table-image" alt="Image" src="${item.images[0].url}">
           </div>`
         :`<div class="sortable-table__cell">${item[cell.id]}</div>`
       ))
@@ -121,7 +121,7 @@ export default class SortableTable {
         case 'number':
           return direction * (a[fieldID] - b[fieldID])
         case 'string':
-          return direction * a[fieldID].localeCompare(b[fieldID], ["ru", "en"])
+          return direction * a[fieldID].localeCompare(b[fieldID], ["ru", "en-US"])
       }
     })
   }
