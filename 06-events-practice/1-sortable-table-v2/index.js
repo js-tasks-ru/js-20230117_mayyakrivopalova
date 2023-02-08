@@ -2,6 +2,18 @@ export default class SortableTable {
   element;
   subElements;
 
+  onPointerdownSort = (event) => {
+    const column = event.target.closest('[data-sortable="true"]')
+
+    if (column) {
+      const field = column.dataset.id;
+      const currentOrder = column.dataset.order;
+      const order = (currentOrder === 'desc') ? 'asc' : 'desc'
+
+      this.sort(field, order)
+    }
+  }
+
   constructor(headersConfig, {
     data = [],
     sorted = {}
@@ -120,24 +132,8 @@ export default class SortableTable {
   }
 
   initListeners() {
-    const headerCells = this.subElements.header.children;
-
-    for (const element of headerCells) {
-      const sortable = JSON.parse(element.dataset.sortable)
-
-      if (sortable) {
-        element.addEventListener('pointerdown', () => this.onPointerdownSort(element))
-      }
-    }
-  }
-
-  onPointerdownSort(element) {
-    const field = element.dataset.id
-    const currentOrder = element.dataset.order;
-
-    const order = (currentOrder === 'desc') ? 'asc' : 'desc'
-
-    this.sort(field, order)
+    const header = this.subElements.header;
+    header.addEventListener('pointerdown', this.onPointerdownSort)
   }
 
   sort(field, order) {
