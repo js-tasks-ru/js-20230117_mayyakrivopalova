@@ -62,7 +62,6 @@ export default class SortableTable {
     }
 
     this.render()
-    this.initListeners()
   }
 
   async render() {
@@ -87,6 +86,7 @@ export default class SortableTable {
       this.loading = false;
       this.setLoadingElement()
     }
+    this.initListeners()
   }
 
   async update(data) {
