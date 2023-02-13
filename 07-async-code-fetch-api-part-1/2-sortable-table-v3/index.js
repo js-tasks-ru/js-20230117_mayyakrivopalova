@@ -48,7 +48,7 @@ export default class SortableTable {
     url = '',
   } = {}) {
     this.headersConfig = headersConfig,
-    this.isSortLocally = isSortLocally;
+    this.isSortLocally = true;
     this.url = new URL(url, BACKEND_URL);
     this.data = data;
 
@@ -142,9 +142,7 @@ export default class SortableTable {
           ${this.getHeaderRow(this.headersConfig)}
         </div>
 
-        <div data-element="body" class="sortable-table__body">
-          ${this.getBodyRow(this.data, this.headersConfig)}
-        </div>
+        <div data-element="body" class="sortable-table__body"></div>
 
         <div data-element="loading" class="loading-line sortable-table__loading-line"></div>
 
