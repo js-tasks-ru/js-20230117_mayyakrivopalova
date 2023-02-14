@@ -47,7 +47,7 @@ export default class SortableTable {
     url = '',
   } = {}) {
     this.headersConfig = headersConfig,
-    this.isSortLocally = true;
+    this.isSortLocally = isSortLocally;
     this.url = new URL(url, BACKEND_URL);
     this.data = data;
 
