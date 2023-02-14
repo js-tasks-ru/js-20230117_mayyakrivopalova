@@ -14,7 +14,7 @@ export default class ColumnChart {
     value = 0,
     formatHeading = data => data
   } = {}) {
-    this.url = url;
+    this.url = new URL(url, BACKEND_URL);
     this.range = range;
     this.label = label;
     this.link = link;
@@ -113,13 +113,10 @@ export default class ColumnChart {
   }
 
   async loadData(from, to) {
-    const fromJson = JSON.stringify(from)
-    const toJson = JSON.stringify(to)
+    this.url.searchParams.set('from', from.toISOString())
+    this.url.searchParams.set('to', to.toISOString())
 
-    let url = `${BACKEND_URL}/${this.url}?from=${fromJson}&to=${toJson}`;
-    url =  url.split('"').join('');
-    
-    const data = await fetchJson(url);
+    const data = await fetchJson(this.url);
     this.data = data;
   }
 
