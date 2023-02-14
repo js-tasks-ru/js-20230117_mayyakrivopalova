@@ -47,7 +47,7 @@ export default class SortableTable {
     url = '',
   } = {}) {
     this.headersConfig = headersConfig,
-    this.isSortLocally = isSortLocally;
+    this.isSortLocally = true;
     this.url = new URL(url, BACKEND_URL);
     this.data = data;
 
@@ -75,7 +75,7 @@ export default class SortableTable {
         const data = await this.loadData(this.sorted, this.start, this.end)
         this.update(data)
       } else {
-        const data = await this.loadData(this.start, this.end)
+        const data = await this.loadData()
         this.update(data)
         this.sortOnClient(this.sorted.id, this.sorted.order)
       }
@@ -92,10 +92,11 @@ export default class SortableTable {
     this.subElements.body.innerHTML = this.getBodyRow(this.data, this.headersConfig)
   }
 
-  async loadData({
-    id,
-    order
-  }, start, end) {
+  // если таблица с постепенной подгрузкой и сортировкой на сервере: 
+  // - loadData вызывается с параметрами сортировки, начальной и конечной позициями
+  // если таблица с локальной сортировкой: 
+  // - loadData вызывается без параметров, возвращается полный объем данных по запросу
+  async loadData({ id, order } = {}, start, end) {
     if (!this.isSortLocally) {
       this.url.searchParams.set('_sort', id)
       this.url.searchParams.set('_order', order)
